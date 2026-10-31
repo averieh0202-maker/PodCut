@@ -1,0 +1,31 @@
+{
+  "version": "v05-refined-type",
+  "date": "2026-10-27",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "b55b49f4eff402e6fa37910d57c5a452715d8a0b9dfec444230b8537c9d1db09",
+      "bytes": 986
+    },
+    {
+      "file": "detail.jpg",
+      "sha256": "028e4dc255bb7a3768b272bf26209c850bb922295eac47c534532f3c03711a07",
+      "bytes": 138701
+    },
+    {
+      "file": "index.html",
+      "sha256": "4e910b9fc67931a11d843a5b2114898bf9edde2a64b9f8c2008eae24ce8fa15e",
+      "bytes": 3533
+    },
+    {
+      "file": "podcut-v05.mp4",
+      "sha256": "a5124cb93169dcab82946fd9605cdc71235dcd5450c23d7e59a0b88d749bd835",
+      "bytes": 2283240
+    },
+    {
+      "file": "poster.jpg",
+      "sha256": "7b03ff1af5c9b01f565296fa4f9b715c5f0853b74d7e37a45f9a05c2f3934843",
+      "bytes": 150529
+    }
+  ]
+}

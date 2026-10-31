@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PodCut</title>
+    <script>try{const q=new URLSearchParams(location.search).get('theme');const t=q==='light'||q==='dark'?q:localStorage.getItem('podcut:theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch{document.documentElement.dataset.theme='light';}</script>
+    <link rel="stylesheet" href="/fonts/ibm-plex-sans.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✂️</text></svg>" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/bootstrap.ts"></script>
+  </body>
+</html>

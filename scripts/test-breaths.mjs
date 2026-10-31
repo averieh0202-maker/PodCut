@@ -1,0 +1,32 @@
+import {build} from 'esbuild';import assert from 'node:assert/strict';import {mkdtemp,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join,resolve} from 'node:path';import {pathToFileURL} from 'node:url';
+const tmp=await mkdtemp(join(tmpdir(),'podcut-breaths-'));
+try {
+ const out=join(tmp,'breaths.mjs');await build({entryPoints:[resolve('src/edit/breaths.ts')],outfile:out,bundle:true,format:'esm',platform:'node',logLevel:'silent'});
+ const {detectBreaths}=await import(pathToFileURL(out));const sr=8000;
+ let seed=42;const noise=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296*2-1;};
+ const wave=fn=>Float32Array.from({length:sr*2},(_,i)=>fn(i/sr));
+ const tone=t=>.1*Math.sin(2*Math.PI*180*t);
+ const breath=wave(t=>t<.5||t>=1.2?tone(t):t>=.65&&t<.95?.02*noise():0);
+ const words=[{id:'a',text:'甲',start:0,end:.5,deleted:false,alignmentSource:'qwen3'},{id:'b',text:'乙',start:1.2,end:2,deleted:false,alignmentSource:'qwen3'}];
+ const run=(ch,ws=words,channels=[ch])=>detectBreaths(ws,[{start:0,end:2}],{channel:ch,channels,sampleRate:sr},2);
+ const found=run(breath);assert.equal(found.length,1);assert.ok(found[0].start>=.525);assert.ok(found[0].end<=1.175+1e-7);
+ const voiced=wave(t=>t<.5||t>=1.2?tone(t):t>=.65&&t<.95?.01*Math.sin(2*Math.PI*180*t):0);assert.equal(run(voiced).length,0);
+ assert.equal(run(breath,words.map(w=>({...w,alignmentSource:undefined}))).length,0);
+ assert.equal(run(breath,[words[0],{...words[1],start:.6}]).length,0);
+ assert.equal(run(breath,words,[breath,voiced]).length,0);
+ const continuous=wave(t=>t<.5||t>=1.2?tone(t):.02*noise());assert.equal(run(continuous).length,0);
+ const restored=detectBreaths(words,[{start:0,end:found[0].start+.01},{start:found[0].end-.01,end:2}],{channel:breath,sampleRate:sr},2);assert.equal(restored.length,0);
+ const interrupted=wave(t=>t<.5||t>=1.2?tone(t):t>=.65&&t<.95&&!(t>=.77&&t<.785)?.02*noise():0);
+ assert.equal(run(interrupted).length,1,'short quiet dips must not split an inhalation');
+ assert.equal(run(breath).length,1);
+ assert.equal(run(breath,words,[breath,voiced]).length,0,'cached mono result must not hide speech in a second channel');
+ const missingLeft=words.map((w,i)=>i===0?{...w,alignmentSource:undefined}:w);
+ assert.equal(run(voiced,missingLeft).length,0,'missing one alignment tag must not admit voiced audio');
+ const short=wave(t=>t<.5||t>=1.2?tone(t):t>=.7&&t<.785?.02*noise():0);
+ assert.equal(run(short).length,1,'short breath inside a longer pause is detected without displaying tiny pauses');
+ const loud=wave(t=>t<.5||t>=1.2?tone(t):t>=.65&&t<.95?.08*noise():0);
+ assert.equal(run(loud).length,1,'close-mic inhalation louder than the old 40% ceiling is included');
+ const loudVoiced=wave(t=>t<.5||t>=1.2?tone(t):t>=.65&&t<.95?.08*Math.sin(2*Math.PI*180*t):0);
+ assert.equal(run(loudVoiced).length,0,'increased breath ceiling must not admit voiced vowels');
+ console.log('Synthetic breath checks passed; private recording fixtures are not distributed.');
+}finally{await rm(tmp,{recursive:true,force:true});}

@@ -1,0 +1,52 @@
+{
+  "name": "podcast-cutter",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test:edit": "node scripts/test-precision.mjs",
+    "test:fades": "node scripts/test-music-fades.mjs",
+    "test:precision": "node scripts/test-precision.mjs",
+    "test:draft": "node scripts/test-draft-disk.mjs",
+    "test:paste": "node scripts/test-paste-boundaries.mjs",
+    "test:alignment": "node scripts/test-forced-alignment.mjs && python3 scripts/test-alignment-consensus.py",
+    "setup:alignment": "sh scripts/setup-alignment.sh",
+    "test:regressions": "node scripts/test-edit-regressions.mjs",
+    "test:agent": "node scripts/test-rough-cut.mjs",
+    "test:history": "node scripts/test-project-history.mjs",
+    "test:speakers": "node scripts/test-speakers.mjs",
+    "dev:opensource": "vite --host 127.0.0.1 --port 5188 --strictPort",
+    "check:release": "node tools/check-release.mjs",
+    "test:smoke": "npm run test:regressions && npm run test:agent && npm run test:speakers && npm run test:paste && npm run test:history && node scripts/test-publication-transcript.mjs && node scripts/test-breaths.mjs && node scripts/test-deletion-audio.mjs && node scripts/test-local-service.mjs",
+    "doctor": "node tools/doctor.mjs",
+    "licenses:collect": "node tools/collect-third-party.mjs",
+    "test:deletion": "node scripts/test-edit-regressions.mjs && node scripts/test-deletion-audio.mjs",
+    "start": "node scripts/local-service.mjs",
+    "service:install": "node scripts/manage-service.mjs install",
+    "service:start": "node scripts/manage-service.mjs start",
+    "service:stop": "node scripts/manage-service.mjs stop",
+    "service:restart": "node scripts/manage-service.mjs restart",
+    "service:status": "node scripts/manage-service.mjs status",
+    "service:uninstall": "node scripts/manage-service.mjs uninstall",
+    "test:service": "node scripts/test-local-service.mjs",
+    "test:service:integration": "node scripts/test-service-recovery.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.2",
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@soundtouchjs/audio-worklet": "2.1.1",
+    "@soundtouchjs/core": "2.1.1"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=22"
+  },
+  "config": {
+    "podcutPort": 5188
+  }
+}

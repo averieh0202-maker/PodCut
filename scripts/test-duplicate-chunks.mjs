@@ -1,0 +1,43 @@
+import {build} from 'esbuild';
+import assert from 'node:assert/strict';
+import {mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+const temp=await mkdtemp(join(tmpdir(),'podcut-dup-'));
+try {
+ const out=join(temp,'dup.mjs');
+ await build({entryPoints:[resolve('server/deepseekDup.ts')],outfile:out,bundle:true,format:'esm',platform:'node',logLevel:'silent'});
+ const {detectDuplicates}=await import(pathToFileURL(out));
+ const seen=new Set();let calls=0;
+ globalThis.fetch=async (_url,options)=>{
+   calls++; const body=JSON.parse(options.body);
+   assert.ok(body.messages[0].content.includes('中途改口'));
+   const ids=[...body.messages[1].content.matchAll(/id=(w\d+) /g)].map(m=>m[1]);
+   ids.forEach(id=>seen.add(id));
+   const duplicates=[];
+   for(const [a,b] of [['w1700','w1710'],['w5200','w5202'],['w7800','w7801']]) if(ids.includes(a)&&ids.includes(b)) duplicates.push({startWordId:a,endWordId:b,reason:'假开头'});
+   duplicates.push({startWordId:ids[10],endWordId:ids[0],reason:'invalid reversed range'});
+   return {ok:true,status:200,text:async()=>JSON.stringify({choices:[{message:{content:JSON.stringify({duplicates})}}]})};
+ };
+ const words=Array.from({length:7902},(_,index)=>({id:`w${index}`,text:'字',index}));
+ const result=await detectDuplicates(words,{DEEPSEEK_API_KEY:'test-only'});
+ assert.equal(seen.size,7902);assert.equal(calls,5);assert.equal(result.duplicates.length,3);
+ assert.equal(result.duplicates.at(-1).startWordId,'w7800');
+ console.log('✓ Entire 7902-word transcript covered; seam suggestions deduplicated; reversed IDs rejected');
+ globalThis.fetch=async()=>({ok:true,status:200,text:async()=>JSON.stringify({choices:[{message:{content:'{"duplicates":[]}'}}]})});
+ const phrase='同样，一个同样的模型。一个同样的模型，甚至同一套提示词，但是专业的人会配备这个模型。';
+ const inputs=Array.from(phrase,(text,index)=>({id:`example${index}`,text,index,clipId:'c'}));
+ const found=await detectDuplicates(inputs,{DEEPSEEK_API_KEY:'test-only'});
+ assert.equal(found.duplicates.length,1);
+ const first=+found.duplicates[0].startWordId.slice(7),last=+found.duplicates[0].endWordId.slice(7);
+ assert.equal(phrase.slice(first,last+1),'一个同样的模型');assert.ok(first<phrase.indexOf('。'));
+ const natural='很多很多的热点，因为成本降低，所以采用它。因为速度也快，我们扩大了使用。';
+ assert.equal((await detectDuplicates(Array.from(natural,(text,index)=>({id:`n${index}`,text,index})),{DEEPSEEK_API_KEY:'test-only'})).duplicates.length,0);
+ const across=inputs.map((w,i)=>({...w,clipId:i<phrase.indexOf('。')+1?'a':'b'}));
+ assert.equal((await detectDuplicates(across,{DEEPSEEK_API_KEY:'test-only'})).duplicates.length,0);
+ console.log('✓ Screenshot retake detected even when AI returns none; emphasis and separate clips excluded');
+ globalThis.fetch=async()=>({ok:false,status:503,text:async()=>JSON.stringify({error:{message:'unavailable'}})});
+ await assert.rejects(()=>detectDuplicates(words,{DEEPSEEK_API_KEY:'test-only'}),/unavailable/);
+ console.log('✓ A failed chunk fails the operation instead of returning incomplete suggestions');
+} finally {await rm(temp,{recursive:true,force:true});}

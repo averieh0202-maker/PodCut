@@ -1,0 +1,40 @@
+import {build} from 'esbuild';import assert from 'node:assert/strict';import {mkdtemp,rm,readFile,stat} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
+const tmp=await mkdtemp(join(tmpdir(),'podcut-production-'));
+try{
+ const file=join(tmp,'lib.mjs');await build({stdin:{contents:"export * from './server/roughCutJobs';export * from './server/diskDraftStore';export * from './server/episodeAssembly';export * from './server/agentAiSettings';export * from './server/podcastSkill';export * from './src/edit/agentProduction';export * from './src/edit/episodeTimeline';",resolveDir:process.cwd()},outfile:file,bundle:true,platform:'node',format:'esm',logLevel:'silent'});
+ const {RoughCutJobs,DiskDraftStore,assembleProduction,productionDefaults,episodeSegments,AgentAiSettings,podcastSkill}=await import(file);
+ const store=new DiskDraftStore(join(tmp,'project'));const material=await store.upload((async function*(){yield Buffer.from('test music fixture');})());
+ const words=Array.from({length:30},(_,i)=>({id:'w'+i,text:i===9||i===19||i===29?'。':'字',start:i*.2,end:i*.2+.18,breakAfter:i===9||i===19||i===29,deleted:false,alignmentSource:'qwen3'}));
+ const payload={version:2,audioName:'test',savedAt:0,clips:[{id:'c',name:'recording',duration:7,words,ranges:[{start:0,end:7}],audioOrder:[{start:0,end:7}]}],music:[],gainDb:0,speechRate:1};
+ const base=await store.save(payload,[],null),segments=episodeSegments(payload.clips);
+ const song={name:'music',duration:10,mime:'audio/wav',asset:material};
+ const production={...productionDefaults,highlights:'choose',musicMode:'configure',opening:song,transition:song,ending:song,speechRate:1.1};
+ const ask=async(_system,data)=>data.segments?{title:'Episode',highlights:[{title:'观点一',reason:'独立判断',parts:[{startId:segments[0].id,endId:segments[0].id}]},{title:'观点二',reason:'完整观点',parts:[{startId:segments[1].id,endId:segments[1].id}]}],chapters:[{id:segments[0].id,title:'第一话题'},{id:segments[2].id,title:'第二话题'}]}:{cuts:[]};
+ const jobs=new RoughCutJobs(store,{},()=>ask),input={id:'production-choose-001',revision:base.revision,reference:'',threshold:.3,breaths:true,pauses:[],production};
+ const settled=async(id)=>{for(let i=0;i<200;i++){const j=await jobs.get(id);if(j.status!=='running')return j;await new Promise(r=>setTimeout(r,10));}throw Error('job timeout');};
+ await jobs.start(input);let j=await settled(input.id);assert.equal(j.status,'awaiting_selection');assert.equal((await store.read()).snapshot.revision,base.revision);assert.equal(j.skill.sha256,podcastSkill().sha256);
+ await assert.rejects(jobs.apply(input.id,base.revision),/尚未完成/);
+ await assert.rejects(jobs.select(input.id,['missing']),/无效/);
+ j=await jobs.select(input.id,['q2','q1']);assert.equal(j.status,'ready');await jobs.apply(input.id,base.revision);
+ const applied=(await store.read()).snapshot;const result=applied.payload;
+ assert.equal(result.clips.length,3);assert.equal(result.clips[0].words[0].text,words[10].text);assert.ok(result.clips[0].words[0].id.endsWith('w10'));
+ assert.deepEqual(result.clips[2].words,words,'teaser cloning preserves body words');assert.equal(result.speechRate,1.1);
+ assert.equal(result.music.length,4,'opening, teaser/body transition, chapter transition and outro');
+ const intro=result.music.find(m=>m.kind==='bed');const teaserDuration=result.clips.slice(0,2).reduce((n,c)=>n+c.ranges.reduce((s,r)=>s+r.end-r.start,0),0);
+ assert.ok(Math.abs(intro.outPoint-(3+teaserDuration/1.1))<1e-8,'intro ends with accelerated teaser, not body');assert.equal(intro.gainDb,-18);
+ const outro=result.music.at(-1);assert.equal(outro.anchorSide,'after');assert.equal(outro.wordId,'w28');assert.equal(result.clips[2].ranges.at(-1).end,words[28].end);
+ assert.ok(applied.assets.some(a=>a.id===material.id));
+ await jobs.undo(input.id,applied.revision);const undone=(await store.read()).snapshot;assert.deepEqual(undone.payload,payload);
+ // Restored checkpoints can be selected and applied without another model request.
+ const skip={...input,id:'production-skip-001',revision:undone.revision};await jobs.start(skip);await settled(skip.id);await jobs.select(skip.id,[]);await jobs.apply(skip.id,undone.revision);assert.equal((await store.read()).snapshot.payload.clips.length,1);
+ const autoBase=(await store.read()).snapshot;const auto={...input,id:'production-auto-001',revision:autoBase.revision,production:{...production,highlights:'auto',highlightCount:1}};await jobs.start(auto);j=await settled(auto.id);assert.equal(j.status,'ready');assert.deepEqual(j.selectedIds,['q1']);
+ const edited=await store.save({...autoBase.payload,audioName:'user edit'},autoBase.assets,autoBase.revision);await assert.rejects(jobs.apply(auto.id,edited.revision),/新修改/);
+ const keep=assembleProduction({...payload,music:[{id:'old',gainDb:-9}]},{...productionDefaults,speechRate:1.15},undefined);assert.deepEqual(keep.music,[{id:'old',gainDb:-9}]);
+ const settings=new AgentAiSettings(tmp,{DEEPSEEK_API_KEY:'dummy-old',DEEPSEEK_MODEL:'test-model'});assert.equal((await settings.publicInfo()).configured,true);
+ await assert.rejects(settings.save({baseUrl:'https://new.example/v1',model:'m',apiKey:''}),/重新填写/);
+ await assert.rejects(settings.save({baseUrl:'http://example.com/v1',model:'m',apiKey:'dummy'}),/HTTPS/);
+ await settings.save({baseUrl:'https://new.example/v1/chat/completions',model:'m',apiKey:'dummy-new'});
+ const publicInfo=await settings.publicInfo();assert.equal(publicInfo.baseUrl,'https://new.example/v1');assert.ok(!JSON.stringify(publicInfo).includes('dummy'));assert.equal((await stat(join(tmp,'.podcast-drafts/agent-ai.json'))).mode&0o777,0o600);
+ await settings.save({baseUrl:'https://new.example/v1',model:'m2',apiKey:''});assert.equal((await settings.config()).apiKey,'dummy-new');
+ console.log('PASS: confirmation gate, skip/auto modes, selection order, real word ranges, independent music, intro end at speech speed, outro, assets, undo, stale edits, skill hash, API key storage and endpoint isolation');
+}finally{await rm(tmp,{recursive:true,force:true});}

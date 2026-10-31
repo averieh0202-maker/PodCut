@@ -1,0 +1,39 @@
+{
+  "duration": 36,
+  "bpm": 120,
+  "fps": 30,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "chapters": [
+    {
+      "seconds": 0,
+      "title": "开场"
+    },
+    {
+      "seconds": 4,
+      "title": "删字剪音频"
+    },
+    {
+      "seconds": 10,
+      "title": "逐字精修"
+    },
+    {
+      "seconds": 14,
+      "title": "Agent 初剪"
+    },
+    {
+      "seconds": 22,
+      "title": "背景与过场"
+    },
+    {
+      "seconds": 30,
+      "title": "导出"
+    },
+    {
+      "seconds": 34,
+      "title": "片尾"
+    }
+  ]
+}

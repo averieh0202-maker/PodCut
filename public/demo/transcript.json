@@ -1,0 +1,556 @@
+{
+  "language": "zh-CN",
+  "audio": "demo/sample.wav",
+  "duration": 18.5496462585034,
+  "text": "大家好，欢迎收听今天的播客。今天我们来聊聊如何提升工作效率。嗯，这个话题其实挺有意思的。首先呢，我觉得专注力是最关键的。好了，我们下期再见。",
+  "words": [
+    {
+      "text": "大",
+      "start": 0.17,
+      "end": 0.29,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "家",
+      "start": 0.29,
+      "end": 0.41,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "好",
+      "start": 0.41,
+      "end": 0.67,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "，",
+      "start": 0.67,
+      "end": 0.67,
+      "estimated": true
+    },
+    {
+      "text": "欢",
+      "start": 0.87,
+      "end": 1.05,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "迎",
+      "start": 1.05,
+      "end": 1.13,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "收",
+      "start": 1.13,
+      "end": 1.29,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "听",
+      "start": 1.29,
+      "end": 1.53,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "今",
+      "start": 1.53,
+      "end": 1.71,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "天",
+      "start": 1.71,
+      "end": 1.79,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "的",
+      "start": 1.79,
+      "end": 1.87,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "播",
+      "start": 1.87,
+      "end": 2.05,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "客",
+      "start": 2.05,
+      "end": 2.31,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "。",
+      "start": 2.31,
+      "end": 2.31,
+      "breakAfter": true,
+      "estimated": true
+    },
+    {
+      "text": "今",
+      "start": 3.89,
+      "end": 4.03,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "天",
+      "start": 4.03,
+      "end": 4.23,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "我",
+      "start": 4.31,
+      "end": 4.43,
+      "estimated": false,
+      "alignmentSource": "fa-zh",
+      "alignmentReview": false
+    },
+    {
+      "text": "们",
+      "start": 4.45,
+      "end": 4.55,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "来",
+      "start": 4.55,
+      "end": 4.69,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "聊",
+      "start": 4.69,
+      "end": 4.93,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "聊",
+      "start": 4.93,
+      "end": 5.09,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "如",
+      "start": 5.29,
+      "end": 5.51,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "何",
+      "start": 5.51,
+      "end": 5.69,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "提",
+      "start": 5.69,
+      "end": 5.85,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "升",
+      "start": 5.85,
+      "end": 6.01,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "工",
+      "start": 6.01,
+      "end": 6.17,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "作",
+      "start": 6.17,
+      "end": 6.31,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "效",
+      "start": 6.31,
+      "end": 6.55,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "率",
+      "start": 6.55,
+      "end": 6.67,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "。",
+      "start": 6.67,
+      "end": 6.67,
+      "breakAfter": true,
+      "estimated": true
+    },
+    {
+      "text": "嗯",
+      "start": 8.51,
+      "end": 8.77,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "，",
+      "start": 8.77,
+      "end": 8.77,
+      "estimated": true
+    },
+    {
+      "text": "这",
+      "start": 9.03,
+      "end": 9.17,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "个",
+      "start": 9.17,
+      "end": 9.25,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "话",
+      "start": 9.25,
+      "end": 9.41,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "题",
+      "start": 9.41,
+      "end": 9.63,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "其",
+      "start": 9.71,
+      "end": 9.85,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "实",
+      "start": 9.85,
+      "end": 9.97,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "挺",
+      "start": 9.97,
+      "end": 10.13,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "有",
+      "start": 10.13,
+      "end": 10.23,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "意",
+      "start": 10.23,
+      "end": 10.37,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "思",
+      "start": 10.37,
+      "end": 10.49,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "的",
+      "start": 10.49,
+      "end": 10.65,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "。",
+      "start": 10.65,
+      "end": 10.65,
+      "breakAfter": true,
+      "estimated": true
+    },
+    {
+      "text": "首",
+      "start": 12.07,
+      "end": 12.21,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "先",
+      "start": 12.21,
+      "end": 12.39,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "呢",
+      "start": 12.41,
+      "end": 12.57,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "，",
+      "start": 12.57,
+      "end": 12.57,
+      "estimated": true
+    },
+    {
+      "text": "我",
+      "start": 12.75,
+      "end": 12.93,
+      "estimated": false,
+      "alignmentSource": "fa-zh",
+      "alignmentReview": false
+    },
+    {
+      "text": "觉",
+      "start": 12.93,
+      "end": 13.07,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "得",
+      "start": 13.09,
+      "end": 13.27,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "专",
+      "start": 13.35,
+      "end": 13.49,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "注",
+      "start": 13.49,
+      "end": 13.65,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "力",
+      "start": 13.65,
+      "end": 13.85,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "是",
+      "start": 13.85,
+      "end": 13.99,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "最",
+      "start": 13.99,
+      "end": 14.17,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "关",
+      "start": 14.17,
+      "end": 14.35,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "键",
+      "start": 14.35,
+      "end": 14.53,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "的",
+      "start": 14.53,
+      "end": 14.71,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "。",
+      "start": 14.71,
+      "end": 14.71,
+      "breakAfter": true,
+      "estimated": true
+    },
+    {
+      "text": "好",
+      "start": 16.41,
+      "end": 16.57,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "了",
+      "start": 16.57,
+      "end": 16.75,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "，",
+      "start": 16.75,
+      "end": 16.75,
+      "estimated": true
+    },
+    {
+      "text": "我",
+      "start": 16.83,
+      "end": 16.97,
+      "estimated": false,
+      "alignmentSource": "fa-zh",
+      "alignmentReview": false
+    },
+    {
+      "text": "们",
+      "start": 17.01,
+      "end": 17.13,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "下",
+      "start": 17.13,
+      "end": 17.33,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "期",
+      "start": 17.33,
+      "end": 17.49,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "再",
+      "start": 17.49,
+      "end": 17.61,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "见",
+      "start": 17.61,
+      "end": 17.81,
+      "estimated": false,
+      "alignmentSource": "qwen3",
+      "alignmentReview": false
+    },
+    {
+      "text": "。",
+      "start": 17.81,
+      "end": 17.81,
+      "breakAfter": true,
+      "estimated": true
+    }
+  ],
+  "note": "原音经本机声学模型逐字对齐；短字经第二模型复核，仍支持试听与手调。"
+}

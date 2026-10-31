@@ -1,0 +1,31 @@
+{
+  "version": "v06-continuous-motion",
+  "date": "2026-10-27",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "6c72e8b44a99d8965cbf0b5e97335edbdeec658bf0da38f2c10c2aadf02b8e52",
+      "bytes": 1126
+    },
+    {
+      "file": "chapters.json",
+      "sha256": "1ba49e269977619f78e14536fef63f64512be075f9e03fd016a0c590022eab87",
+      "bytes": 542
+    },
+    {
+      "file": "index.html",
+      "sha256": "816f833866d4a4007e70c16ab4669cb98c32031827fbe03d9cf93ef81b772225",
+      "bytes": 4090
+    },
+    {
+      "file": "podcut-v06.mp4",
+      "sha256": "bf321503a2c58c65ae8100896a235d49ebf2ef919b2065218345b3468af7955b",
+      "bytes": 4667144
+    },
+    {
+      "file": "poster.jpg",
+      "sha256": "a4cffaa9e2f780c634735a5db485089ad5334267d246857e5597cabe5a54847a",
+      "bytes": 135071
+    }
+  ]
+}

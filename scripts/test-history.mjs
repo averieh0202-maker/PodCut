@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import {build} from 'esbuild';
+import {mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+const dir=await mkdtemp(join(tmpdir(),'podcut-history-'));
+try {
+ const out=join(dir,'history.mjs');
+ await build({entryPoints:[resolve('src/edit/history.ts')],outfile:out,bundle:true,format:'esm',platform:'node',logLevel:'silent'});
+ const {UndoStack}=await import(pathToFileURL(out));
+ const state=(clipId,start,deleted=false)=>({clipId,words:[{id:'w',text:'Hello',start,end:start+.4,deleted,removedAudio:deleted?[{start,end:start+.4}]:[]}],ranges:deleted?[]:[{start,end:start+.4}],audioOrder:[{start:0,end:4}],duration:4,clearedPauses:[{id:'p',start:2,end:3}],manualPauses:[{id:'m',start:2,end:3,sourceStart:2,sourceEnd:3}]});
+ const h=new UndoStack();
+ const initial=state('c1',1), deleted=state('c1',1,true), moved=state('c2',1.2);
+ h.push(initial); h.push(state('c2',1));
+ assert.equal(h.undoClipId,'c2'); assert.equal(h.canRedo,false);
+ assert.deepEqual(h.pop(moved),state('c2',1));
+ assert.deepEqual(h.pop(deleted),initial); assert.equal(h.canUndo,false); assert.equal(h.redoClipId,'c1');
+ assert.deepEqual(h.redo(initial),deleted); assert.deepEqual(h.redo(state('c2',1)),moved);
+ assert.equal(h.canRedo,false); assert.equal(h.undoClipId,'c2');
+ h.pop(moved); h.push(state('c1',.8)); assert.equal(h.canRedo,false,'new edit invalidates redo branch');
+ const isolated=new UndoStack();const before=state('c1',1);isolated.push(before);
+ before.words[0].removedAudio.push({start:7,end:8});before.clearedPauses[0].end=9;before.manualPauses[0].end=9;
+ assert.deepEqual(isolated.pop(deleted),initial,'stored audio cuts, words and pauses are detached');
+ deleted.words[0].removedAudio[0].end=9;deleted.ranges.push({start:8,end:9});
+ assert.deepEqual(isolated.redo(initial),state('c1',1,true),'redo captures the edited state independently');
+ const bounded=new UndoStack(2); for(let n=0;n<3;n++)bounded.push(state('c'+n,n));
+ assert.equal(bounded.pop().clipId,'c2');assert.equal(bounded.pop().clipId,'c1');assert.equal(bounded.pop(),null);
+ h.clear();assert.equal(h.canUndo,false);assert.equal(h.canRedo,false);
+ console.log('✓ undo/redo across clips, exact audio cuts and pause bounds, detached snapshots, branch invalidation, limit and clear');
+} finally {await rm(dir,{recursive:true,force:true});}

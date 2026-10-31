@@ -1,0 +1,22 @@
+{
+  "version": "v03-tech-beat",
+  "title": "36 秒科技卡点版",
+  "date": "2026-10-27",
+  "files": [
+    {
+      "file": "original-notes.md",
+      "sha256": "e50747dca89b365776fe980d5d18cf0b20f246881329af81416ffbd204d33757",
+      "bytes": 732
+    },
+    {
+      "file": "podcut-tech-film.mp4",
+      "sha256": "8dde2b3fcc0fd78b0d62afe0a9fb8360ae2ced825c513a48d4c0778c05660540",
+      "bytes": 2590937
+    },
+    {
+      "file": "poster.jpg",
+      "sha256": "d08ce016ce99635ca524e1145bf279b369faebde9384531d86cb91b63f3be924",
+      "bytes": 125395
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "version": "v01-operation-demos",
+    "title": "操作演示初版",
+    "date": "2026-10-27",
+    "movie": null,
+    "poster": "01-word-boundary.jpg"
+  },
+  {
+    "version": "v02-feature-film",
+    "title": "45 秒功能宣传版",
+    "date": "2026-10-27",
+    "movie": "podcut-feature-film.mp4",
+    "poster": "01-text-edit.jpg"
+  },
+  {
+    "version": "v03-tech-beat",
+    "title": "36 秒科技卡点版",
+    "date": "2026-10-27",
+    "movie": "podcut-tech-film.mp4",
+    "poster": "poster.jpg"
+  },
+  {
+    "version": "v04-product-film",
+    "title": "36 秒黑白产品片",
+    "date": "2026-10-27",
+    "movie": "podcut-v04.mp4",
+    "fps": 60,
+    "poster": "poster.jpg"
+  },
+  {
+    "version": "v05-refined-type",
+    "title": "36 秒字体与界面精修版",
+    "date": "2026-10-27",
+    "movie": "podcut-v05.mp4",
+    "fps": 60,
+    "poster": "poster.jpg"
+  },
+  {
+    "version": "v06-continuous-motion",
+    "title": "36 秒统一深色连续动效版",
+    "date": "2026-10-27",
+    "movie": "podcut-v06.mp4",
+    "fps": 60,
+    "poster": "poster.jpg"
+  }
+]

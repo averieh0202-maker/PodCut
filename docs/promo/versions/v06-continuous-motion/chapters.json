@@ -1,0 +1,36 @@
+{
+  "duration": 36,
+  "fps": 60,
+  "font_family": "PingFang SC",
+  "background": "#101718",
+  "chapters": [
+    {
+      "seconds": 0,
+      "name": "开场"
+    },
+    {
+      "seconds": 3,
+      "name": "选区与音频收拢"
+    },
+    {
+      "seconds": 8,
+      "name": "字界拖动"
+    },
+    {
+      "seconds": 12,
+      "name": "初剪补位"
+    },
+    {
+      "seconds": 20,
+      "name": "配乐轨道"
+    },
+    {
+      "seconds": 29,
+      "name": "导出"
+    },
+    {
+      "seconds": 33,
+      "name": "片尾"
+    }
+  ]
+}

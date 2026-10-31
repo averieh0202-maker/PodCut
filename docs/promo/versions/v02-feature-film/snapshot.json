@@ -1,0 +1,92 @@
+{
+  "version": "v02-feature-film",
+  "title": "45 秒功能宣传版",
+  "date": "2026-10-27",
+  "files": [
+    {
+      "file": "01-text-edit.gif",
+      "sha256": "83725f574ab3ea2d24f3542083331be6a5ef2b176acd7a2020797d7b9e856808",
+      "bytes": 186808
+    },
+    {
+      "file": "01-text-edit.jpg",
+      "sha256": "65885bf19907095a843f8bbda3f05c12c2529ef206e1940188e0352876fd10cf",
+      "bytes": 143816
+    },
+    {
+      "file": "01-text-edit.mp4",
+      "sha256": "8340ab9bd5e6d554aba0f02cf57dc0c9ce3e0abf80df23d86287c6c7d72a0c1a",
+      "bytes": 109573
+    },
+    {
+      "file": "02-word-boundary.gif",
+      "sha256": "064a8949e9eef7c3a476069d02da17f7b296fb80a1f819406edc2dd250feff22",
+      "bytes": 523850
+    },
+    {
+      "file": "02-word-boundary.jpg",
+      "sha256": "ea82e7ad5ed4c1eea680330339da05b4cdff43e509f1de2e3c3ff7c1c82a4ddc",
+      "bytes": 128740
+    },
+    {
+      "file": "02-word-boundary.mp4",
+      "sha256": "2d31e34468f16d1332e1331bf330097d3283db45aeaefdb5ae1d6e748812ca0f",
+      "bytes": 188467
+    },
+    {
+      "file": "03-agent-first-cut.gif",
+      "sha256": "2c906e9104448f2ef1ea102d666fc0419c3a19c5532888bc7af02ded43e14001",
+      "bytes": 271996
+    },
+    {
+      "file": "03-agent-first-cut.jpg",
+      "sha256": "6fc0ba703835622e98be71241dbdea07fd8e7656a87cd5ecd8410905e1f85f60",
+      "bytes": 261788
+    },
+    {
+      "file": "03-agent-first-cut.mp4",
+      "sha256": "2d8f8e70a45e95da06b8bd11950fc25295f9f1548a5ef4b724b9ee84c542f2f8",
+      "bytes": 309145
+    },
+    {
+      "file": "04-music.gif",
+      "sha256": "fecd7a625a61f839f594ac16479808c474074347beb572bef49b763548cb5b10",
+      "bytes": 453228
+    },
+    {
+      "file": "04-music.jpg",
+      "sha256": "3a18c9f93bd79df91b57d6e71766e78530f6b55bf6bc6bb2b9524331a44d42ea",
+      "bytes": 126489
+    },
+    {
+      "file": "04-music.mp4",
+      "sha256": "8e1bede817c56a1f7bd4275a23953a65a008b4f63d8f654ef7a57cf2ae0645e7",
+      "bytes": 308209
+    },
+    {
+      "file": "05-export.gif",
+      "sha256": "5ade801f10969fc4dd173bbb9f020484dde3b5272b141299bc774f80c1e18f51",
+      "bytes": 503373
+    },
+    {
+      "file": "05-export.jpg",
+      "sha256": "25cc50750c7881d1d64f7cbd65fea7f93798574543d2f7f9acd4f9c76590401e",
+      "bytes": 132673
+    },
+    {
+      "file": "05-export.mp4",
+      "sha256": "ea23ade75095a5471a85ab5a37dc820d243aa09e26bd048a619e0a67b68ed575",
+      "bytes": 186641
+    },
+    {
+      "file": "original-notes.md",
+      "sha256": "20a070e4cb338565bc785b55d33ffc6bb723acc436ac7aad64ca7459889ea8ab",
+      "bytes": 2061
+    },
+    {
+      "file": "podcut-feature-film.mp4",
+      "sha256": "314058c73e2c145712130839d558214da48cd106cfc221fb18e86312ce4aba9c",
+      "bytes": 1098943
+    }
+  ]
+}

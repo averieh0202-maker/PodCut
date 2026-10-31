@@ -1,0 +1,27 @@
+{
+  "version": "v04-product-film",
+  "title": "36 秒黑白产品片",
+  "date": "2026-10-27",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "c0d72f477e4cd280464407b4ed5df53b27e82c402fb704ab9aae5b1859ecd415",
+      "bytes": 882
+    },
+    {
+      "file": "index.html",
+      "sha256": "41011d9b531f431212be9f4fa989686830cc98ce4f9d539a2750574d19f08cd2",
+      "bytes": 3093
+    },
+    {
+      "file": "podcut-v04.mp4",
+      "sha256": "0fa30871827a63967f1b690a0191e937d27e2de89ac1ae58e4a39775195c4863",
+      "bytes": 3543147
+    },
+    {
+      "file": "poster.jpg",
+      "sha256": "549bda3a19ed300f6b6afef8c661d7be6773ce02b782a500448da0bf23a61c7e",
+      "bytes": 66850
+    }
+  ]
+}

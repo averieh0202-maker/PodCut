@@ -1,0 +1,26 @@
+import {build} from 'esbuild';import assert from 'node:assert/strict';import {mkdtemp,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import path from 'node:path';import {pathToFileURL} from 'node:url';
+const tmp=await mkdtemp(path.join(tmpdir(),'episode-test-'));
+try{
+ const bundle=path.join(tmp,'test.mjs');await build({stdin:{contents:"export * from './src/audio/mixSchedule';export * from './src/edit/episodeTimeline';export * from './server/episodeEditorial';export * from './server/projectScope';export * from './src/edit/draftStore';",resolveDir:process.cwd()},bundle:true,platform:'node',format:'esm',outfile:bundle,logLevel:'silent'});
+ const {buildMixSchedule,episodeSegments,projectRoot,publishEpisode:publishCore,planEpisode}=await import(pathToFileURL(bundle));
+ const publishEpisode=(segments,ask,reference='')=>publishCore(segments,async(system,data)=>data.task==='article-style'?{article:data.article}:data.task==='article-review'||data.task==='article-recheck'||data.task==='article-final-review'?{pass:true,issues:[],missingViews:[],newClaims:[],coverage:[],edits:[],article:data.article}:ask(system,data),reference);
+ const words=[{id:'w1',text:'第一句话。',start:0,end:2,breakAfter:true},{id:'w2',text:'最后一句话。',start:5,end:7,breakAfter:true}];
+ const clip={id:'c',duration:8,buffer:{duration:8},words,ranges:[{start:0,end:2},{start:5,end:7}],gainDb:19};
+ const music=[{id:'intro',kind:'bed',buffer:{duration:10},clipId:'c',wordId:'w1',anchorSide:'before',originalTime:0,gainDb:-18,leadInSec:3,outPoint:8},{id:'end',kind:'stinger',buffer:{duration:4},clipId:'c',wordId:'w2',anchorSide:'after',originalTime:7,gainDb:-3}];
+ const mix=buildMixSchedule([clip],music);assert.equal(mix.sources.find(s=>s.role==='bed').whenEdit,0);assert.equal(mix.sources.find(s=>s.role==='speech').whenEdit,3);assert.equal(mix.sources.find(s=>s.role==='speech').offset,0);assert.equal(mix.sources.find(s=>s.placementId==='end').whenEdit,7);assert.equal(mix.totalDuration,11);assert.equal(mix.sources.find(s=>s.role==='bed').gainLinear,10**(-18/20));
+ const segments=episodeSegments([clip],music);assert.deepEqual(segments.map(s=>s.start),[3,5]);
+ const normal=buildMixSchedule([clip],[{...music[0],leadInSec:0}]);assert.equal(normal.sources.find(s=>s.role==='speech').whenEdit,0);
+ assert.equal(projectRoot('/tmp/x',''),'/tmp/x/.podcast-drafts');assert.equal(projectRoot('/tmp/x','episode-1'),'/tmp/x/.podcast-drafts/projects/episode-1');assert.throws(()=>projectRoot('/tmp/x','../../a'));assert.throws(()=>projectRoot('/tmp/x',['a']));
+ let calls=0;const pub=await publishEpisode(segments,async()=>++calls===1?{title:'本期',description:'节目简介',chapters:[{id:segments[1].id,title:'最后话题',quote:segments[1].text},{id:'fake',title:'伪造'}]}:{article:'完整书面稿'});assert.ok(pub.showNotes.includes('00:05 最后话题'));assert.ok(!pub.showNotes.includes('伪造'));assert.ok(pub.article.includes('第一句话。'));assert.equal(calls,1,'only show notes may call the model');
+ const long=[{...segments[0],end:9},{...segments[1],start:12,end:18}];await assert.rejects(()=>planEpisode(long,'',async()=>({highlights:[{parts:[{startId:'invented',endId:'invented'}]}]})),/没有有效/);
+ const plan=await planEpisode(long,'',async()=>({highlights:long.map(s=>({parts:[{startId:s.id,endId:s.id}],title:'精句'})),chapters:[{id:long[0].id,title:'话题'}]}));assert.equal(plan.highlights.length,2);assert.equal(plan.highlights[0].id,'q1');assert.equal(plan.highlights[0].parts.length,1);assert.equal(plan.highlights[0].duration,6);assert.equal(plan.highlights[0].quote,long[0].text);
+ const publishingInputs=[];let publishCalls=0;
+ await publishEpisode([{...segments[0],id:'teaser:w1',clipId:'teaser-0'},...segments],async(system,data)=>{publishingInputs.push(data);return ++publishCalls===1?{title:'专名校正',description:'内容',chapters:[{id:segments[0].id,title:'正文',quote:segments[0].text}]}:{article:'完整正文'};},'Karpathy / Dots：仅校对专名');
+ assert.ok(publishingInputs[0].referenceTerms.includes('Karpathy')&&publishingInputs[0].referenceTerms.includes('Dots'));
+ assert.equal(publishingInputs[0].reference,'Karpathy / Dots：仅校对专名');
+ assert.ok(publishingInputs[0].segments.every(s=>s.clipId!=='teaser-0'),'chapter planning must use body, never the opening teaser');
+ assert.equal(publishingInputs.length,1);assert.equal(publishingInputs[0].task,'publication-notes');
+ let shortCalls=0;const short=await publishEpisode(segments,async(system,data)=>{if(++shortCalls===1){assert.deepEqual(data.segments.map(s=>s.id),['s1','s2']);return {title:'标题',description:'简介',chapters:[{id:'s1',title:'第二段',quote:segments[1].text}]};}return {article:'书面长文'};});assert.ok(short.showNotes.includes('00:05 第二段'));
+ let brokenCalls=0;const broken=await publishEpisode(segments,async()=>++brokenCalls===1?{title:'标题',description:'简介',chapters:[{id:'invented',title:'虚构章节'}]}:{article:'应当可以下载的长文'});assert.ok(broken.article.includes('第一句话。'));assert.equal(brokenCalls,1);assert.ok(broken.chapterWarning);assert.ok(broken.showNotes.includes('00:03 正文'));assert.ok(!broken.showNotes.includes('虚构章节'));
+ console.log('Episode checks passed: lead-in scheduling, complete first word, final-word outro, independent music gain, edited timestamps, legacy defaults, project isolation, invalid paths, grounded publishing and highlight IDs.');
+}finally{await rm(tmp,{recursive:true,force:true});}
