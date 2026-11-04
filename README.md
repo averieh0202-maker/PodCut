@@ -81,7 +81,7 @@ macOS 日常使用可执行 `npm run service:install`，安装当前用户的登
 cp .env.example .env.local
 ```
 
-在 `.env.local` 填写自己的火山语音识别凭据；Agent 初剪可在网页绑定兼容 Chat Completions 的模型 API，也可配置 DeepSeek。修改环境文件后重启服务。不要把服务端密钥加上 `VITE_` 前缀。
+录音转写默认使用**火山引擎豆包语音「录音文件识别模型 2.0」标准版**（资源 ID：`volc.seedasr.auc`，`submit` + `query` 模式）。在 `.env.local` 填写自己的火山语音识别凭据；如果使用其他已开通的资源或调用模式，需相应修改配置。Agent 初剪的内容判断由网页绑定的兼容 Chat Completions 模型 API 或自行配置的 DeepSeek 完成，它不是录音转写模型。修改环境文件后重启服务。不要把服务端密钥加上 `VITE_` 前缀。
 
 新录音转写会上传至所配置的语音服务；Agent 内容分析会把文字交给所选模型服务。相应 API 费用由使用者承担。对已经转写的工程进行手动剪辑和原话文字稿导出不需要模型 API。
 
@@ -91,7 +91,7 @@ cp .env.example .env.local
 npm run setup:alignment
 ```
 
-该命令会安装 Python 依赖并下载模型；耗时、内存和磁盘需求尚未在全新机器上完整验证。仓库没有预装模型。
+该命令会安装 Python 依赖并下载用于逐字校准的 **Qwen3-ForcedAligner-0.6B** 与 **iic/speech_timestamp_prediction-v1-16k-offline**；它们在本机运行，与火山引擎的录音转写模型分工不同。耗时、内存和磁盘需求尚未在全新机器上完整验证。仓库没有预装模型。
 
 ## 与原安装隔离
 
